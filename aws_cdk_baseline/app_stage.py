@@ -4,9 +4,12 @@ from typing import Dict
 import aws_cdk as cdk
 from constructs import Construct
 from aws_cdk_baseline.lambda_app_stack import LambdaAppStack
+from aws_cdk_baseline.orchestation_app_stack import OrchestationAppStack
+
 
 class GlueAppStage(cdk.Stage):
     def __init__(self, scope: Construct, construct_id: str, config:Dict, stage:str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         self.lambda_app_stack = LambdaAppStack(self, "LambdaAppStack", config, stage)
+        self.orchestation_app_stack = OrchestationAppStack(self, "OrchestationAppStack", config, stage)
