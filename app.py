@@ -7,7 +7,7 @@ import yaml
 
 import aws_cdk as cdk
 
-from aws_glue_cdk_baseline.pipeline_stack import PipelineStack
+from aws_cdk_baseline.pipeline_stack import PipelineStack
 
 
 app = cdk.App()
@@ -28,8 +28,8 @@ PipelineStack(
     "PipelineStack",
     config=config,
     env=cdk.Environment(
-        account=str(config["pipelineAccount"]["awsAccountId"]), 
-        region=config["pipelineAccount"]["awsRegion"]
+        account=str(config["devAccount"]["awsAccountId"]), 
+        region=config["devAccount"]["awsRegion"]
     )
 )
 

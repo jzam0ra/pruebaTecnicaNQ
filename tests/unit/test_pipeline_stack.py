@@ -3,19 +3,11 @@
 import aws_cdk as core
 import aws_cdk.assertions as assertions
 
-from aws_glue_cdk_baseline.pipeline_stack import PipelineStack
+from aws_cdk_baseline.pipeline_stack import PipelineStack
 
 config = {
-    "pipelineAccount": {
-        "awsAccountId": 123456789101,
-        "awsRegion": "us-east-1"
-    },
     "devAccount": {
-        "awsAccountId": 123456789102,
-        "awsRegion": "us-east-1"
-    },
-    "prodAccount": {
-        "awsAccountId": 123456789103,
+        "awsAccountId": 390403866377,
         "awsRegion": "us-east-1"
     },
     "dev": {

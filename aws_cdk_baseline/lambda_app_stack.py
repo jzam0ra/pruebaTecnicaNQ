@@ -4,12 +4,13 @@ from typing import Dict
 from os import path
 from aws_cdk import (
     Stack,
+    aws_lambda as _lambda,
     aws_glue_alpha as glue,
     aws_iam as iam,
 )
 from constructs import Construct
 
-class GlueAppStack(Stack):
+class LambdaAppStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, config:Dict, stage:str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
@@ -18,12 +19,12 @@ class GlueAppStack(Stack):
                 glue_version=glue.GlueVersion.V4_0,
                 python_version=glue.PythonVersion.THREE,
                 script=glue.Code.from_asset(
-                    path.join(path.dirname(__file__), "job_scripts/process_legislators.py")
+                    path.join(path.dirname(__file__), "project_files/process_legislators.py")
                 )
             ),
             description="an example PySpark job",
             default_arguments={
-                "--input_path": config[stage]['jobs']['ProcessLegislators']['inputLocation']
+                "--input_path": ""
             },
             tags={
                 "environment": self.environment,
@@ -36,7 +37,7 @@ class GlueAppStack(Stack):
         # For integration test
         self.iam_role = iam.Role(self, "GlueTestRole",
             role_name=f"glue-test-{stage}",
-            assumed_by=iam.ArnPrincipal(f"arn:aws:iam::{str(config['pipelineAccount']['awsAccountId'])}:root"),
+            assumed_by=iam.ArnPrincipal(f"arn:aws:iam::{str(config['devAccount']['awsAccountId'])}:root"),
             inline_policies={
                 "GluePolicy": iam.PolicyDocument(
                     statements=[
@@ -55,7 +56,3 @@ class GlueAppStack(Stack):
                 )
             }
         )
-
-    @property
-    def iam_role_arn(self):
-        return self.iam_role.role_arn
