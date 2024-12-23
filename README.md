@@ -2,7 +2,7 @@
 
 Esta plantilla de app se toma de un [blog ejemplo de AWS](https://aws.amazon.com/es/blogs/big-data/end-to-end-development-lifecycle-for-data-engineers-to-build-a-data-integration-pipeline-using-aws-glue/). Para más detalles se puede visitar el link en cuestión. Usamos este ejemplo por las herramientas de IaC principalmente, dado que está pensado para ETL's en Glue, las cuales no usamos acá, además de que está pensado para una organización de múltiples cuentas, mientras que en este ejemplo sólo usamos una. Para detalles de cómo implementar este ejemplo en una cuenta propia, se puede guiar también de ese link, teniendo en cuenta que la fuente del Pipeline de datos ahora es GitHub.
 
-![alt text](https://github.com/jzam0ra/pruebaTecnicaNQ/pictures/main/arquitectura.png?raw=true)
+![alt text](https://github.com/jzam0ra/pruebaTecnicaNQ/blob/main/pictures/arquitectura.png?raw=true)
 
 Acá nos centraremos en responder las siguientes preguntas:
 
