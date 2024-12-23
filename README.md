@@ -16,7 +16,7 @@ Los datos usados para este proyecto fueron extraídos de [datos abiertos colombi
 • En este aspecto no se llegó a gran profundidad dado principalmente a que las ETLs escogidas fueron esencialmente sencillas, esto de nuevo dado a que se prefirió dar un enfoque al diseño de una arquitectura costo-eficiente en la nube. Algunas de las validaciones hechas para verificar la calidad de los datos requeridos en las transformaciones fueron:
 
 * `aws_cdk_baseline/project_files/lambda/lambda/lam_data_extraction.py`
-´´´python
+```python
         print("Performing data cleaning...")
         data['fechaobservacion'] = pd.to_datetime(data['fechaobservacion'], errors='coerce')
         data = data.dropna(subset=['fechaobservacion'])  
@@ -26,7 +26,7 @@ Los datos usados para este proyecto fueron extraídos de [datos abiertos colombi
         print("Performing data cleaning...")
         data['valorobservado'] = pd.to_datetime(data['valorobservado'], errors='coerce')
         data = data.dropna(subset=['valorobservado'])
-´´´
+```
 
 
 3. Definir el modelo de datos
@@ -45,7 +45,7 @@ La arquitectura escogida consta de los siguientes recursos en la nube:
     * Lambda para el procesamiento de datos, ya que permite desplegar paquetes pequeños, y su costo es bajo.
     * El catálogo de glue permite tener hasta 1 millón de objetos almacenados en su capa gratuita, por lo cual al juntar esto con la metadata que nos permite trabajar athena, podemos consultar los datos almacenados con el motor de consulta de athena por un bajo precio, evitando tener que manejar bases de datos en Dynamo o Redshift. Un ejemplo de cómo se disponibilizarían los datos desde athena para este ejemplo se ve a continuación:
 
-    ![alt text](https://github.com/jzam0ra/pruebaTecnicaNQ/blob/main/pictures/tablas.png?raw=true)
+![alt text](https://github.com/jzam0ra/pruebaTecnicaNQ/blob/main/pictures/tablas.png?raw=true)
 
     * Las herramientas de orquestación como el EventBridge o StepFunctions, son comúnmente usadas para programar flujos de trabajo porque permiten funcionar basado en eventos, lo cual es una aspiración primordial en la nube, y por otro lado, estos servicios evitan tener que manejar un ambiente de Airflow en AWS.
 • Proponga con qué frecuencia deben actualizarse los datos y por qué.
