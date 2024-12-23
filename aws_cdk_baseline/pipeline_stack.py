@@ -23,7 +23,6 @@ class PipelineStack(Stack):
         source = CodePipelineSource.connection("jzam0ra/pruebaTecnicaNQ", "main",
             connection_arn="arn:aws:codeconnections:us-east-1:390403866377:connection/3df4df9e-0eb1-4ffa-9979-8f61dbd46ade"
         )
-        #"arn:aws:codeconnections:us-east-1:390403866377:connection/3df4df9e-0eb1-4ffa-9979-8f61dbd46ade"
         
         pipeline = CodePipeline(self, "DataPipeline",
             pipeline_name="DataPipeline",
