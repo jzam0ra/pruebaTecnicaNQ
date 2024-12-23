@@ -13,11 +13,20 @@ Los datos usados para este proyecto fueron extraídos de [datos abiertos colombi
 
 2. Explorar y evaluar los datos, el EDA.
 
-• Explorar los datos para identificar problemas de calidad de los datos, como valores perdidos,
-datos duplicados, problemas de formato etc.
-• Documentar los pasos necesarios para limpiar los datos, indicar que tipo de pasos se sugieren
-para la limpieza. Tip se puede usar un diagrama, mapa mental o adición en la arquitectura
-del paso siguiente con el fin de dejar claro este paso.
+• En este aspecto no se llegó a gran profundidad dado principalmente a que las ETLs escogidas fueron esencialmente sencillas, esto de nuevo dado a que se prefirió dar un enfoque al diseño de una arquitectura costo-eficiente en la nube. Algunas de las validaciones hechas para verificar la calidad de los datos requeridos en las transformaciones fueron:
+
+* `aws_cdk_baseline/project_files/lambda/lambda/lam_data_extraction.py`
+´´´python
+        print("Performing data cleaning...")
+        data['fechaobservacion'] = pd.to_datetime(data['fechaobservacion'], errors='coerce')
+        data = data.dropna(subset=['fechaobservacion'])  
+        data['dt_key'] = data['fechaobservacion'].dt.strftime('%Y%m%d%H')
+        data = data.drop_duplicates() 
+
+        print("Performing data cleaning...")
+        data['valorobservado'] = pd.to_datetime(data['valorobservado'], errors='coerce')
+        data = data.dropna(subset=['valorobservado'])
+´´´
 
 
 3. Definir el modelo de datos
@@ -32,15 +41,21 @@ La arquitectura escogida consta de los siguientes recursos en la nube:
 ![alt text](https://github.com/jzam0ra/pruebaTecnicaNQ/blob/main/pictures/arquitectura.png?raw=true)
 
 
-• Indique claramente los motivos de la elección de las herramientas y tecnologías para el
-proyecto.
+• Los servicios escogidos en la arquitectura se decidieron dado que se ha experimentado que son algunos de los servicios que resultan más costo-eficientes para tareas de preprocesamientos, ingestas y volúmenes de consulta pequeños. Es por esto que se determinó usar:
+    * Lambda para el procesamiento de datos, ya que permite desplegar paquetes pequeños, y su costo es bajo.
+    * El catálogo de glue permite tener hasta 1 millón de objetos almacenados en su capa gratuita, por lo cual al juntar esto con la metadata que nos permite trabajar athena, podemos consultar los datos almacenados con el motor de consulta de athena por un bajo precio, evitando tener que manejar bases de datos en Dynamo o Redshift. Un ejemplo de cómo se disponibilizarían los datos desde athena para este ejemplo se ve a continuación:
+
+    ![alt text](https://github.com/jzam0ra/pruebaTecnicaNQ/blob/main/pictures/tablas.png?raw=true)
+
+    * Las herramientas de orquestación como el EventBridge o StepFunctions, son comúnmente usadas para programar flujos de trabajo porque permiten funcionar basado en eventos, lo cual es una aspiración primordial en la nube, y por otro lado, estos servicios evitan tener que manejar un ambiente de Airflow en AWS.
 • Proponga con qué frecuencia deben actualizarse los datos y por qué.
+    * Los datos, como se propone en esta arquitectura podrían actualizarse, en caso de que el caso de uso no lo vea tan necesario, una vez cada día. En situaciones NRT se podría hacer cada hora, y para monitoreo en tiempo real, como lo formula una pregunta posterior, se puede usar el servicio de streaming Kinesis.
 
 
 4. Completar la redacción del proyecto
 
 • ¿Cuál es el objetivo del proyecto?
-* Lo que se pretende es tener un seguimiento NRT (near real time) de las precipitaciones en Colombia, esto con el fín de poder predecir tendencias o comportamientos atípicos.
+* Lo que se pretende es tener un seguimiento de las precipitaciones en Colombia, esto con el fín de poder predecir tendencias o comportamientos atípicos.
 
 • ¿Qué preguntas quieres hacer?
 * ¿Qué tanto ha llovido por departamento o municipio, en los últimos días en Colombia?, con los datos históricos, ¿qué tipo de análisis predictivos se pueden hacer?
@@ -63,9 +78,5 @@ o Si se requiere hacer analítica en tiempo real, ¿cuales componentes cambiaria
 * Si se requiere en tiempo real, se puede usar AWS Kinesis, ya que este permite ingerir, procesar y almacenar datos en tiempo real. Esto junto con una modificación a la arquitectura para que sea basada en eventos y no en programación, se puede lograr con los mismo componentes en Lambda. 
 
 
-* `aws_glue_cdk_baseline/job_scripts/tests/test_join_legislators.py`
 
-```python
-
-```
 
