@@ -6,6 +6,7 @@ from aws_cdk import (
     Stack,
     aws_lambda as lambda_,
     aws_s3_deployment as s3deploy,
+    aws_s3 as s3,
     RemovalPolicy,
     CfnTag,
 )

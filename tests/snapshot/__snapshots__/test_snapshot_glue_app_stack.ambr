@@ -9,7 +9,41 @@
       }),
     }),
     'Resources': dict({
-      'GlueTestRole299DF719': dict({
+      'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536': dict({
+        'DependsOn': list([
+          'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF',
+          'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265',
+        ]),
+        'Properties': dict({
+          'Code': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1',
+            }),
+            'S3Key': '9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip',
+          }),
+          'Environment': dict({
+            'Variables': dict({
+              'AWS_CA_BUNDLE': '/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem',
+            }),
+          }),
+          'Handler': 'index.handler',
+          'Layers': list([
+            dict({
+              'Ref': 'PopulatelambdaBucketAwsCliLayer9FD2CBCF',
+            }),
+          ]),
+          'Role': dict({
+            'Fn::GetAtt': list([
+              'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265',
+              'Arn',
+            ]),
+          }),
+          'Runtime': 'python3.9',
+          'Timeout': 900,
+        }),
+        'Type': 'AWS::Lambda::Function',
+      }),
+      'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265': dict({
         'Properties': dict({
           'AssumeRolePolicyDocument': dict({
             'Statement': list([
@@ -17,78 +51,30 @@
                 'Action': 'sts:AssumeRole',
                 'Effect': 'Allow',
                 'Principal': dict({
-                  'AWS': 'arn:aws:iam::390403866377:root',
+                  'Service': 'lambda.amazonaws.com',
                 }),
               }),
             ]),
             'Version': '2012-10-17',
           }),
-          'Policies': list([
+          'ManagedPolicyArns': list([
             dict({
-              'PolicyDocument': dict({
-                'Statement': list([
-                  dict({
-                    'Action': list([
-                      'glue:GetJobs',
-                      'glue:GetJobRun',
-                      'glue:GetTags',
-                      'glue:StartJobRun',
-                    ]),
-                    'Effect': 'Allow',
-                    'Resource': '*',
-                  }),
-                ]),
-                'Version': '2012-10-17',
-              }),
-              'PolicyName': 'GluePolicy',
-            }),
-          ]),
-          'RoleName': 'glue-test-dev',
-        }),
-        'Type': 'AWS::IAM::Role',
-      }),
-      'ProcessLegislators18B04980': dict({
-        'Properties': dict({
-          'Command': dict({
-            'Name': 'glueetl',
-            'PythonVersion': '3',
-            'ScriptLocation': dict({
               'Fn::Join': list([
                 '',
                 list([
-                  's3://',
+                  'arn:',
                   dict({
-                    'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1',
+                    'Ref': 'AWS::Partition',
                   }),
-                  '/082f7775a87088f156e9216cc34d11dc8f91ccfb9440f08c232039a616eec066.py',
+                  ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
                 ]),
               ]),
             }),
-          }),
-          'DefaultArguments': dict({
-            '--input_path': '',
-            '--job-language': 'python',
-          }),
-          'Description': 'an example PySpark job',
-          'GlueVersion': '4.0',
-          'Role': dict({
-            'Fn::GetAtt': list([
-              'ProcessLegislatorsServiceRoleE21E0CFA',
-              'Arn',
-            ]),
-          }),
-          'Tags': dict({
-            'artifact_id': 'TestGlueAppStack',
-            'environment': 'aws://unknown-account/us-east-1',
-            'stack_id': dict({
-              'Ref': 'AWS::StackId',
-            }),
-            'stack_name': 'TestGlueAppStack',
-          }),
+          ]),
         }),
-        'Type': 'AWS::Glue::Job',
+        'Type': 'AWS::IAM::Role',
       }),
-      'ProcessLegislatorsServiceRoleDefaultPolicyFAD2FE59': dict({
+      'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF': dict({
         'Properties': dict({
           'PolicyDocument': dict({
             'Statement': list([
@@ -133,48 +119,182 @@
                   }),
                 ]),
               }),
+              dict({
+                'Action': list([
+                  's3:GetObject*',
+                  's3:GetBucket*',
+                  's3:List*',
+                  's3:DeleteObject*',
+                  's3:PutObject',
+                  's3:PutObjectLegalHold',
+                  's3:PutObjectRetention',
+                  's3:PutObjectTagging',
+                  's3:PutObjectVersionTagging',
+                  's3:Abort*',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  'arn:aws:s3:::s3-scripts-bucket-390403866377',
+                  'arn:aws:s3:::s3-scripts-bucket-390403866377/*',
+                ]),
+              }),
             ]),
             'Version': '2012-10-17',
           }),
-          'PolicyName': 'ProcessLegislatorsServiceRoleDefaultPolicyFAD2FE59',
+          'PolicyName': 'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF',
           'Roles': list([
             dict({
-              'Ref': 'ProcessLegislatorsServiceRoleE21E0CFA',
+              'Ref': 'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265',
             }),
           ]),
         }),
         'Type': 'AWS::IAM::Policy',
       }),
-      'ProcessLegislatorsServiceRoleE21E0CFA': dict({
+      'PopulatelambdaBucketAwsCliLayer9FD2CBCF': dict({
         'Properties': dict({
-          'AssumeRolePolicyDocument': dict({
-            'Statement': list([
-              dict({
-                'Action': 'sts:AssumeRole',
-                'Effect': 'Allow',
-                'Principal': dict({
-                  'Service': 'glue.amazonaws.com',
-                }),
-              }),
-            ]),
-            'Version': '2012-10-17',
+          'Content': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1',
+            }),
+            'S3Key': '09ee37fb9a746a9dea0618b3024913848346b4b63d08d3fae387b9a11ac83a01.zip',
           }),
-          'ManagedPolicyArns': list([
+          'Description': '/opt/awscli/aws',
+        }),
+        'Type': 'AWS::Lambda::LayerVersion',
+      }),
+      'PopulatelambdaBucketCustomResourceEA355E6C': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'DestinationBucketName': 's3-scripts-bucket-390403866377',
+          'Prune': False,
+          'ServiceToken': dict({
+            'Fn::GetAtt': list([
+              'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536',
+              'Arn',
+            ]),
+          }),
+          'SourceBucketNames': list([
             dict({
-              'Fn::Join': list([
-                '',
-                list([
-                  'arn:',
-                  dict({
-                    'Ref': 'AWS::Partition',
-                  }),
-                  ':iam::aws:policy/service-role/AWSGlueServiceRole',
-                ]),
-              ]),
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1',
             }),
           ]),
+          'SourceObjectKeys': list([
+            'ff75372ec91838d1a1e0eff2df6ab6c5eac524c1d9a2ef1eb972824e543c24fd.zip',
+          ]),
         }),
-        'Type': 'AWS::IAM::Role',
+        'Type': 'Custom::CDKBucketDeployment',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'lamdataextraction': dict({
+        'DeletionPolicy': 'Retain',
+        'DependsOn': list([
+          'PopulatelambdaBucketAwsCliLayer9FD2CBCF',
+          'PopulatelambdaBucketCustomResourceEA355E6C',
+        ]),
+        'Properties': dict({
+          'Architectures': list([
+            'x86_64',
+          ]),
+          'Code': dict({
+            'S3Bucket': 's3-scripts-bucket-390403866377',
+            'S3Key': 'lambda/lam_data_extraction.zip',
+          }),
+          'Description': '',
+          'EphemeralStorage': dict({
+            'Size': 1024,
+          }),
+          'FunctionName': 'lam_data_extraction',
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            'arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python312:15',
+          ]),
+          'MemorySize': 1024,
+          'Role': 'arn:aws:iam::390403866377:role/service-role/first-test-role-vn00mm7y',
+          'Runtime': 'python3.12',
+          'Tags': list([
+            dict({
+              'Key': 'Name',
+              'Value': 'lam_data_extraction',
+            }),
+          ]),
+          'Timeout': 300,
+        }),
+        'Type': 'AWS::Lambda::Function',
+        'UpdateReplacePolicy': 'Retain',
+      }),
+      'laminsertdatacatalog': dict({
+        'DeletionPolicy': 'Retain',
+        'DependsOn': list([
+          'PopulatelambdaBucketAwsCliLayer9FD2CBCF',
+          'PopulatelambdaBucketCustomResourceEA355E6C',
+        ]),
+        'Properties': dict({
+          'Architectures': list([
+            'x86_64',
+          ]),
+          'Code': dict({
+            'S3Bucket': 's3-scripts-bucket-390403866377',
+            'S3Key': 'lambda/lam_insert_data_catalog.zip',
+          }),
+          'Description': '',
+          'EphemeralStorage': dict({
+            'Size': 1024,
+          }),
+          'FunctionName': 'lam_insert_data_catalog',
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            'arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python312:15',
+          ]),
+          'MemorySize': 1024,
+          'Role': 'arn:aws:iam::390403866377:role/service-role/first-test-role-vn00mm7y',
+          'Runtime': 'python3.12',
+          'Tags': list([
+            dict({
+              'Key': 'Name',
+              'Value': 'lam_insert_data_catalog',
+            }),
+          ]),
+          'Timeout': 300,
+        }),
+        'Type': 'AWS::Lambda::Function',
+        'UpdateReplacePolicy': 'Retain',
+      }),
+      'lamtransformarprecipitaciones': dict({
+        'DeletionPolicy': 'Retain',
+        'DependsOn': list([
+          'PopulatelambdaBucketAwsCliLayer9FD2CBCF',
+          'PopulatelambdaBucketCustomResourceEA355E6C',
+        ]),
+        'Properties': dict({
+          'Architectures': list([
+            'x86_64',
+          ]),
+          'Code': dict({
+            'S3Bucket': 's3-scripts-bucket-390403866377',
+            'S3Key': 'lambda/lam_transformar_precipitaciones.zip',
+          }),
+          'Description': '',
+          'EphemeralStorage': dict({
+            'Size': 1024,
+          }),
+          'FunctionName': 'lam_transformar_precipitaciones',
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            'arn:aws:lambda:us-east-1:336392948345:layer:AWSSDKPandas-Python312:15',
+          ]),
+          'MemorySize': 1024,
+          'Role': 'arn:aws:iam::390403866377:role/service-role/first-test-role-vn00mm7y',
+          'Runtime': 'python3.12',
+          'Tags': list([
+            dict({
+              'Key': 'Name',
+              'Value': 'lam_transformar_precipitaciones',
+            }),
+          ]),
+          'Timeout': 300,
+        }),
+        'Type': 'AWS::Lambda::Function',
+        'UpdateReplacePolicy': 'Retain',
       }),
     }),
     'Rules': dict({

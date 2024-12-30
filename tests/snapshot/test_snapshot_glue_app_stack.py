@@ -9,6 +9,9 @@ config = {
     "devAccount": {
         "awsAccountId": 390403866377,
         "awsRegion": "us-east-1"
+    },
+    "dev": {
+        "awsAccountId": 390403866377
     }
 }
 

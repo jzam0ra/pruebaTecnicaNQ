@@ -15,7 +15,8 @@ config = {
             "ProcessLegislators": {
                 "inputLocation": "s3://path_to_data/"
             }
-        }
+        },
+        "awsAccountId": 390403866377
     },
     "prod": {
         "jobs": {
