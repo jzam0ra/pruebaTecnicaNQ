@@ -75,7 +75,7 @@ class OrchestationAppStack(Stack):
         ##                             Y SCHEDULERS                             ##
         ##                                                                      ##
         ##########################################################################
-
+        self.schedule_input = {}
         self.import_schedule = scheduler.CfnSchedule(self, "import_schedule",
             flexible_time_window=scheduler.CfnSchedule.FlexibleTimeWindowProperty(
                 mode="OFF",
@@ -84,7 +84,7 @@ class OrchestationAppStack(Stack):
             target=scheduler.CfnSchedule.TargetProperty(
                 arn=f"arn:aws:states:us-east-1:{str(config[stage]['awsAccountId'])}:stateMachine:stm_launch_lambda",
                 role_arn=f"arn:aws:iam::{str(config[stage]['awsAccountId'])}:role/service-role/Amazon_EventBridge_Scheduler_SFN_b61b2be1a1",
-                input="\{\}",
+                input=json.dumps(self.schedule_input),
                 retry_policy=scheduler.CfnSchedule.RetryPolicyProperty(
                     maximum_event_age_in_seconds=900,
                     maximum_retry_attempts=0
