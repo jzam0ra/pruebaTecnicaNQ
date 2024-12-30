@@ -91,7 +91,6 @@ class OrchestationAppStack(Stack):
                 )
             ),
 
-            # the properties below are optional
             description="",
             group_name="default",
             name="import_schedule",
