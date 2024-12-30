@@ -33,7 +33,7 @@ class OrchestationAppStack(Stack):
                     "Resource": "arn:aws:states:::lambda:invoke",
                     "Output": "{% $states.result.Payload %}",
                     "Arguments": {
-                        "FunctionName": "arn:aws:lambda:us-east-1:390403866377:function:first-test:$LATEST"
+                        "FunctionName": "arn:aws:lambda:us-east-1:390403866377:function:lam_data_extraction:$LATEST"
                     },
                     "Retry": [
                         {
