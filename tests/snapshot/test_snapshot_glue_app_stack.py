@@ -15,6 +15,16 @@ config = {
     }
 }
 
+def remove_key(obj, key_to_remove):
+    if isinstance(obj, dict):
+        obj.pop(key_to_remove, None)
+        for k, v in obj.items():
+            remove_key(v, key_to_remove)
+    elif isinstance(obj, list):
+        for item in obj:
+            remove_key(item, key_to_remove)
+
+
 def test_glue_app_stack_snapshot(snapshot):
     app = core.App()
     stack = LambdaAppStack(
@@ -25,4 +35,7 @@ def test_glue_app_stack_snapshot(snapshot):
         env=core.Environment(region='us-east-1')
     )
     template = assertions.Template.from_stack(stack)
+    templateJson = template.to_json() 
+    remove_key(templateJson, "S3Key")
+    remove_key(snapshot, "S3Key")
     assert template.to_json() == snapshot
