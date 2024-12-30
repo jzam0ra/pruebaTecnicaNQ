@@ -38,4 +38,4 @@ def test_glue_app_stack_snapshot(snapshot):
     templateJson = template.to_json() 
     remove_key(templateJson, "S3Key")
     remove_key(snapshot, "S3Key")
-    assert template.to_json() == snapshot
+    assert templateJson == snapshot

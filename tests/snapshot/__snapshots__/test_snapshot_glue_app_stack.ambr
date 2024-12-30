@@ -19,7 +19,6 @@
             'S3Bucket': dict({
               'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1',
             }),
-            'S3Key': '9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip',
           }),
           'Environment': dict({
             'Variables': dict({
@@ -156,7 +155,6 @@
             'S3Bucket': dict({
               'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1',
             }),
-            'S3Key': '09ee37fb9a746a9dea0618b3024913848346b4b63d08d3fae387b9a11ac83a01.zip',
           }),
           'Description': '/opt/awscli/aws',
         }),
@@ -197,7 +195,6 @@
           ]),
           'Code': dict({
             'S3Bucket': 's3-scripts-bucket-390403866377',
-            'S3Key': 'lambda/lam_data_extraction.zip',
           }),
           'Description': '',
           'EphemeralStorage': dict({
@@ -234,7 +231,6 @@
           ]),
           'Code': dict({
             'S3Bucket': 's3-scripts-bucket-390403866377',
-            'S3Key': 'lambda/lam_insert_data_catalog.zip',
           }),
           'Description': '',
           'EphemeralStorage': dict({
@@ -271,7 +267,6 @@
           ]),
           'Code': dict({
             'S3Bucket': 's3-scripts-bucket-390403866377',
-            'S3Key': 'lambda/lam_transformar_precipitaciones.zip',
           }),
           'Description': '',
           'EphemeralStorage': dict({
